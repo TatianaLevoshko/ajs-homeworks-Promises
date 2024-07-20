@@ -1,16 +1,14 @@
 import read from './reader';
 import json from './parser';
-import GameSaving from './GameSaving';
 
 export default class GameSavingLoader {
   static async load() {
     try {
       const data = await read();
-      const jsonData = await json(data);
-      const parsedData = JSON.parse(jsonData);
-      return new GameSaving(parsedData.id, parsedData.created, parsedData.userInfo);
+      const value = await json(data);
+      return JSON.parse(value);
     } catch (error) {
-      return Promise.reject(error);
+      throw new Error('Failed to load game saving: ' + error.message);
     }
   }
 }
